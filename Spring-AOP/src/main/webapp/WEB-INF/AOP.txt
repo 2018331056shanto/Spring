@@ -1,0 +1,72 @@
+cross-cutting concern
+A common functionality which is required in entire apps or across the apps
+Why AOP?
+1.Re-usability
+2.Cross Cutting Concerns
+3.Fast Development
+4.At runtime Enabled/Disabled
+
+----------
+In Maven build tool to use AOP  we need some maven dependency
+1.Aspectj Weaver
+2.spring context
+3.spring AOP
+In configuration file enable Aspect
+@EnableAspectAutoProxy
+
+Wildcard Pointcut Expression
+* it is wildcard operator in spring AOP
+if we want to use any method starts with study we have to use wildcard
+example:
+@After("executon(public void study*())")
+@After annotation works after the execution of that method
+
+@Before("executon(public void study*())")
+@Before annotation works before the execution of that caller method
+
+Pointcuts JoinPoints
+A pointcut is a predicate that matches the join points,
+ and the pointcut expression language is a way of describing pointcuts programmatically.
+
+ Join Point: A join point is a specific point in the application such as method execution,
+  exception handling, changing object variable values, etc.
+  In Spring AOP a join point is always the execution of a method.
+
+within
+
+Match all methods defined in classes inside package com.howtodoinjava
+Within AOP limits matching to join points within certain types.
+within(com.howtodoinjava.*)
+@Pointcut("within(com.tedblob.model..*")
+private void withinModelAll() {}
+
+execution()
+@Pointcut("execution(* transfer(..))")
+
+A pointcut expression contains a pointcut designator and a pattern to match the method executions.
+
+
+ Suppose we need to execute multiple advice in the same method
+ where the methods are called is joinPoints
+ to use multiple advice in the same joinPoints we need to add those pointcuts multiple times in multiple advice
+ to avoid these we use pointcuts. where we define the method name where we want to use those advice
+ then we use those methods jointpoint in multiple advice
+
+ to use multiple pointcuts
+
+ Example:
+ @Aspect
+ public class TestAop {
+
+ @Pointcut("execution(public * com.packg.foo.ClassOne.*(..)) || execution(public * com.packg.cat.ClassTwo.*(..)) || execution(public * com.packg.roo.ClassThree.*(..))")
+ public void fooPoint(){}
+
+ @Around("fooPoint()")
+ public Object myAdvice(ProceedingJoinPoint joinPoint) {
+ //do something like joint proceed and all
+ }
+
+
+
+If we want to get all the information about joinPoint method
+we can use JoinPoint object in Aspect
